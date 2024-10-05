@@ -3,32 +3,31 @@
 import Link from "next/link"
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap"
-import { FaPlusCircle } from "react-icons/fa";
-import { FaRegEdit } from "react-icons/fa";
+import { FaPlusCircle, FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Pagina from "../components/Pagina";
 
 export default function Page() {
 
-    const [empresas, setEmpresas] = useState([])
+    const [aeroportos, setAeroportos] = useState([]); // Alterando para aeroportos
 
     useEffect(() => {
-        setEmpresas(JSON.parse(localStorage.getItem('empresas')) || [])
-    }, [])
+        setAeroportos(JSON.parse(localStorage.getItem('aeroportos')) || []); // Sempre 'aeroportos'
+    }, []);
 
     function excluir(id) {
         if (confirm('Deseja realmente excluir o registro?')) {
-            const dados = empresas.filter(item => item.id != id)
-            localStorage.setItem('empresas', JSON.stringify(dados))
-            setEmpresas(dados)
+            const dados = aeroportos.filter(item => item.id !== id); // Corrigindo o filtro
+            localStorage.setItem('aeroportos', JSON.stringify(dados)); // Salvando com 'aeroportos'
+            setAeroportos(dados);
         }
     }
 
     return (
-        <Pagina titulo="Empresas">
+        <Pagina titulo="Aeroportos">
 
             <Link
-                href="/empresas/form"
+                href="/aeroporto/create"
                 className="btn btn-primary mb-3"
             >
                 <FaPlusCircle /> Novo
@@ -39,14 +38,17 @@ export default function Page() {
                     <tr>
                         <th>#</th>
                         <th>Nome</th>
-                        <th>Logo</th>
+                        <th>Sigla</th>
+                        <th>UF</th>
+                        <th>Cidade</th>
+                        <th>País</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {empresas.map((item, i) => (
+                    {aeroportos.map((item, i) => (
                         <tr key={item.id}>
                             <td>
-                                <Link href={`/empresas/form/${item.id}`}>
+                                <Link href={`/aeroporto/form/${item.id}`}>
                                     <FaRegEdit title="Editar" className="text-primary" />
                                 </Link>
                                 <MdDelete
@@ -56,15 +58,14 @@ export default function Page() {
                                 />
                             </td>
                             <td>{item.nome}</td>
-                            <td>
-                                <a href={item.site} target="_blank">
-                                    <img src={item.logo} width={100} />
-                                </a>
-                            </td>
+                            <td>{item.sigla}</td>
+                            <td>{item.uf}</td>
+                            <td>{item.cidade}</td>
+                            <td>{item.pais}</td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
         </Pagina>
-    )
+    );
 }

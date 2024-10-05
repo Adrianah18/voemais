@@ -3,32 +3,31 @@
 import Link from "next/link"
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap"
-import { FaPlusCircle } from "react-icons/fa";
-import { FaRegEdit } from "react-icons/fa";
+import { FaPlusCircle, FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Pagina from "../components/Pagina";
 
 export default function Page() {
 
-    const [empresas, setEmpresas] = useState([])
+    const [passageiros, setPassageiros] = useState([])
 
     useEffect(() => {
-        setEmpresas(JSON.parse(localStorage.getItem('empresas')) || [])
+        setPassageiros(JSON.parse(localStorage.getItem('passageiros')) || [])  // Sempre 'passageiros' minúsculo
     }, [])
 
     function excluir(id) {
         if (confirm('Deseja realmente excluir o registro?')) {
-            const dados = empresas.filter(item => item.id != id)
-            localStorage.setItem('empresas', JSON.stringify(dados))
-            setEmpresas(dados)
+            const dados = passageiros.filter(item => item.id !== id)  // Corrigindo o filtro
+            localStorage.setItem('passageiros', JSON.stringify(dados))  // Salvando com 'passageiros' minúsculo
+            setPassageiros(dados)
         }
     }
 
     return (
-        <Pagina titulo="Empresas">
+        <Pagina titulo="Passageiros">
 
             <Link
-                href="/empresas/form"
+                href="/passageiros/create"
                 className="btn btn-primary mb-3"
             >
                 <FaPlusCircle /> Novo
@@ -39,14 +38,18 @@ export default function Page() {
                     <tr>
                         <th>#</th>
                         <th>Nome</th>
-                        <th>Logo</th>
+                        <th>Tipo de Documento</th>
+                        <th>Documento</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Data de Nascimento</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {empresas.map((item, i) => (
+                    {passageiros.map((item, i) => (
                         <tr key={item.id}>
                             <td>
-                                <Link href={`/empresas/form/${item.id}`}>
+                                <Link href={`/passageiros/form/${item.id}`}>
                                     <FaRegEdit title="Editar" className="text-primary" />
                                 </Link>
                                 <MdDelete
@@ -56,11 +59,11 @@ export default function Page() {
                                 />
                             </td>
                             <td>{item.nome}</td>
-                            <td>
-                                <a href={item.site} target="_blank">
-                                    <img src={item.logo} width={100} />
-                                </a>
-                            </td>
+                            <td>{item.tipoDocumento}</td>
+                            <td>{item.numeroDocumento}</td>
+                            <td>{item.email}</td>
+                            <td>{item.telefone}</td>
+                            <td>{item.dataNascimento}</td>
                         </tr>
                     ))}
                 </tbody>
