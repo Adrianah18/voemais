@@ -27,7 +27,7 @@ export default function Page() {
         <Pagina titulo="Passagens">
 
             <Link
-                href="/passagens/create"
+                href="/passagens/form"
                 className="btn btn-primary mb-3"
             >
                 <FaPlusCircle /> Novo

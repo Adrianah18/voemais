@@ -13,7 +13,7 @@ export default function Page({ params }) {
 
     const route = useRouter()
 
-    const empresas = JSON.parse(localStorage.getItem('empresas')) || []
+    const empresas = JSON.parse(localStorage.getItem('empresas')) || [];
     const dados = empresas.find(item => item.id == params.id)
     const empresa = dados || { nome: '', logo: '', site: '' }
     

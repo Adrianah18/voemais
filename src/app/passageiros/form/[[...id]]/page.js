@@ -1,6 +1,5 @@
 'use client'
 
-import Pagina from "@/components/Pagina";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,6 +8,7 @@ import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 as uuidv4 } from 'uuid';  // Adicionando função para gerar ID
 import InputMask from 'react-input-mask';
+import Pagina from "@/app/components/Pagina";
 
 export default function Page({ params }) {
 

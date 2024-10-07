@@ -14,7 +14,7 @@ export default function Page() {
 
     useEffect(() => {
         setEmpresas(JSON.parse(localStorage.getItem('empresas')) || [])
-    }, [])
+    }, []);
 
     function excluir(id) {
         if (confirm('Deseja realmente excluir o registro?')) {

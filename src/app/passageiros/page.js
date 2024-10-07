@@ -27,7 +27,7 @@ export default function Page() {
         <Pagina titulo="Passageiros">
 
             <Link
-                href="/passageiros/create"
+                href="/passageiros/form"
                 className="btn btn-primary mb-3"
             >
                 <FaPlusCircle /> Novo
