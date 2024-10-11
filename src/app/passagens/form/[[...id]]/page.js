@@ -1,38 +1,49 @@
 'use client'
 
+import Pagina from "@/app/components/Pagina";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
-import { v4 as uuidv4 } from 'uuid';  // Adicionando função para gerar ID
+import { v4 } from "uuid";
 
 export default function Page({ params }) {
 
-    const route = useRouter();
+    const route = useRouter()
 
-    const aeroportos = JSON.parse(localStorage.getItem('aeroportos')) || [];
-    const dados = aeroportos.find(item => item.id === params.id);
-    const aeroporto = dados || { nome: '', sigla: '', uf: '', cidade: '', pais: '' };
+    const passagens = JSON.parse(localStorage.getItem('passagens')) || []
+    const dados = passagens.find(item => item.id == params.id)
+
+    const [passageiro, setPassageiros] = useState([])
+    const [voos, setVoos]= useState([])
+
+
+    useEffect(() => {
+        setPassageiros(JSON.parse(localStorage.getItem('passageiros')) || [])
+        setVoos(JSON.parse(localStorage.getItem('voos')) || [])
+    }, [])
 
     function salvar(dados) {
-        if (aeroporto.id) {
-            Object.assign(aeroporto, dados);  // Atualiza se já existir
+
+        if (passagens.id) {
+            Object.assign(passagens, dados)
         } else {
-            dados.id = uuidv4();  // Gera um novo ID único se for novo aeroporto
-            aeroportos.push(dados);  // Corrigindo para adicionar aos aeroportos
+            dados.id = v4()
+            passagens.push(dados)
         }
 
-        localStorage.setItem('aeroportos', JSON.stringify(aeroportos)); // Corrigindo para salvar com 'aeroportos'
-        return route.push('/aeroporto');
+        localStorage.setItem('passagens', JSON.stringify(passagens))
+        return route.push('/passagens')
     }
 
     return (
-        <Pagina titulo="Aeroporto">
+        <Pagina titulo="Passagens">
 
             <Formik
-                initialValues={aeroporto}
+                initialValues={passagens}
                 onSubmit={values => salvar(values)}
             >
                 {({
@@ -40,96 +51,57 @@ export default function Page({ params }) {
                     handleChange,
                     handleSubmit,
                 }) => (
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group className="mb-3" controlId="nome">
-                            <Form.Label>Nome</Form.Label>
+                    <Form>
+                        <Form.Group className="mb-3" controlId="Passageiro">
+                            <Form.Label>Passageiro</Form.Label>
+                            <Form.Select
+                                name="Passageiro"
+                                value={values.passageiro}
+                                onChange={handleChange('Passageiro')}
+                            >
+                                <option value=''>Selecione</option>
+                                {passageiro.map(item => (
+                                    <option key={item.sigla} value={item.sigla}>
+                                        {item.sigla} - {item.nome}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="Voo">
+                            <Form.Label>Voo</Form.Label>
+                            <Form.Select
+                                name="Voo"
+                                value={values.voos}
+                                onChange={handleChange('Voo')}
+                            >
+                                <option value=''>Selecione</option>
+                                {voos.map(item => (
+                                    <option key={item.nome} value={item.nome}>
+                                        {item.nome}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                        
+                        
+                        <Form.Group className="mb-3" controlId="preco">
+                            <Form.Label>Preço</Form.Label>
                             <Form.Control
                                 type="text"
-                                name="nome"
-                                value={values.nome}
-                                onChange={handleChange('nome')}
+                                name="preco"
+                                value={values.preco}
+                                onChange={handleChange('preco')}
                             />
                         </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="sigla">
-                            <Form.Label>Sigla</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="sigla"
-                                value={values.sigla}
-                                onChange={handleChange('sigla')}
-                                maxLength={2}  // Limite de 2 caracteres para a sigla
-                                placeholder="Digite a sigla"
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="uf">
-                            <Form.Label>Estado (UF)</Form.Label>
-                            <Row>
-                                <Col sm={4}>
-                                    <Form.Select
-                                        name="uf"
-                                        value={values.uf}
-                                        onChange={handleChange('uf')}
-                                    >
-                                        <option value="">Selecione o Estado</option>
-                                        <option value="AC">Acre (AC)</option>
-                                        <option value="AL">Alagoas (AL)</option>
-                                        <option value="AP">Amapá (AP)</option>
-                                        <option value="AM">Amazonas (AM)</option>
-                                        <option value="BA">Bahia (BA)</option>
-                                        <option value="CE">Ceará (CE)</option>
-                                        <option value="DF">Distrito Federal (DF)</option>
-                                        <option value="ES">Espírito Santo (ES)</option>
-                                        <option value="GO">Goiás (GO)</option>
-                                        <option value="MA">Maranhão (MA)</option>
-                                        <option value="MT">Mato Grosso (MT)</option>
-                                        <option value="MS">Mato Grosso do Sul (MS)</option>
-                                        <option value="MG">Minas Gerais (MG)</option>
-                                        <option value="PA">Pará (PA)</option>
-                                        <option value="PB">Paraíba (PB)</option>
-                                        <option value="PR">Paraná (PR)</option>
-                                        <option value="PE">Pernambuco (PE)</option>
-                                        <option value="PI">Piauí (PI)</option>
-                                        <option value="RJ">Rio de Janeiro (RJ)</option>
-                                        <option value="RN">Rio Grande do Norte (RN)</option>
-                                        <option value="RS">Rio Grande do Sul (RS)</option>
-                                        <option value="RO">Rondônia (RO)</option>
-                                        <option value="RR">Roraima (RR)</option>
-                                        <option value="SC">Santa Catarina (SC)</option>
-                                        <option value="SP">São Paulo (SP)</option>
-                                        <option value="SE">Sergipe (SE)</option>
-                                        <option value="TO">Tocantins (TO)</option>
-                                    </Form.Select>
-                                </Col>
-                            </Row>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="cidade">
-                            <Form.Label>Cidade</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="cidade"
-                                value={values.cidade}
-                                onChange={handleChange('cidade')}
-                            />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="pais">
-                            <Form.Label>País</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="pais"
-                                value={values.pais}
-                                onChange={handleChange('pais')}
-                            />
-                        </Form.Group>
-
+                     
                         <div className="text-center">
-                            <Button type="submit" variant="success">
+                            <Button onClick={handleSubmit} variant="success">
                                 <FaCheck /> Salvar
                             </Button>
-                            <Link href="/aeroporto" className="btn btn-danger ms-2">
+                            <Link
+                                href="/passagens"
+                                className="btn btn-danger ms-2"
+                            >
                                 <MdOutlineArrowBack /> Voltar
                             </Link>
                         </div>
@@ -137,5 +109,5 @@ export default function Page({ params }) {
                 )}
             </Formik>
         </Pagina>
-    );
+    )
 }

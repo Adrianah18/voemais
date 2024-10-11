@@ -9,16 +9,16 @@ import Pagina from "../components/Pagina";
 
 export default function Page() {
 
-    const [passagens, setPassagens] = useState([]); // Alterando para aeroportos
+    const [passagens, setPassagens] = useState([]); 
 
     useEffect(() => {
-        setPassagens(JSON.parse(localStorage.getItem('passagens')) || []); // Sempre 'aeroportos'
+        setPassagens(JSON.parse(localStorage.getItem('passagens')) || []); 
     }, []);
 
     function excluir(id) {
         if (confirm('Deseja realmente excluir o registro?')) {
-            const dados = passagens.filter(item => item.id !== id); // Corrigindo o filtro
-            localStorage.setItem('passagens', JSON.stringify(dados)); // Salvando com 'aeroportos'
+            const dados = passagens.filter(item => item.id !== id); 
+            localStorage.setItem('passagens', JSON.stringify(dados)); 
             setPassagens(dados);
         }
     }
@@ -37,17 +37,17 @@ export default function Page() {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Voo_id</th>
-                        <th>Passageiro_id</th>
+                        <th>Voo</th>
+                        <th>Passageiro</th>
                         <th>Assento</th>
                         <th>Preço</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {aeroportos.map((item, i) => (
+                    {passagens.map((item, i) => (
                         <tr key={item.id}>
                             <td>
-                                <Link href={`/aeroporto/form/${item.id}`}>
+                                <Link href={`/passagens/form/${item.id}`}>
                                     <FaRegEdit title="Editar" className="text-primary" />
                                 </Link>
                                 <MdDelete
@@ -56,11 +56,10 @@ export default function Page() {
                                     onClick={() => excluir(item.id)}
                                 />
                             </td>
-                            <td>{item.nome}</td>
-                            <td>{item.sigla}</td>
-                            <td>{item.uf}</td>
-                            <td>{item.cidade}</td>
-                            <td>{item.pais}</td>
+                            <td>{item.voo}</td>
+                            <td>{item.passageiro}</td>
+                            <td>{item.assento}</td>
+                            <td>{item.preço}</td>
                         </tr>
                     ))}
                 </tbody>

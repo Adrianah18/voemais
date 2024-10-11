@@ -6,10 +6,22 @@ export default function Pagina(props){
          <>
         <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">Voe Mais</Navbar.Brand>
+          <Navbar.Brand href="#home">VoeMais</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="/filmes">Empresas</Nav.Link>
-            
+            <Nav.Link href="/empresas">Empresas</Nav.Link>
+          </Nav>
+
+          <Nav className="me-auto">
+            <Nav.Link href="/aeroporto">Aeroportos</Nav.Link>
+          </Nav>
+          <Nav className="me-auto">
+            <Nav.Link href="/voos">Voos</Nav.Link>
+          </Nav>
+          <Nav className="me-auto">
+            <Nav.Link href="/passageiros">Passageiros</Nav.Link>
+          </Nav>
+          <Nav className="me-auto">
+            <Nav.Link href="/passagens">Passagens</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
