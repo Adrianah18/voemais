@@ -16,6 +16,7 @@ export default function Page({ params }) {
 
     const passagens = JSON.parse(localStorage.getItem('passagens')) || []
     const dados = passagens.find(item => item.id == params.id)
+    const passagem = dados || { Identificador: '', Empresa: '', Origem: '', Destino: '', Preço: '', dtCheckin: '',embarque: '', }
 
     const [passageiro, setPassageiros] = useState([])
     const [voos, setVoos]= useState([])
@@ -28,7 +29,7 @@ export default function Page({ params }) {
 
     function salvar(dados) {
 
-        if (passagens.id) {
+        if (passagem.id) {
             Object.assign(passagens, dados)
         } else {
             dados.id = v4()
@@ -67,6 +68,7 @@ export default function Page({ params }) {
                                 ))}
                             </Form.Select>
                         </Form.Group>
+                        
                         <Form.Group className="mb-3" controlId="Voo">
                             <Form.Label>Voo</Form.Label>
                             <Form.Select
@@ -76,8 +78,8 @@ export default function Page({ params }) {
                             >
                                 <option value=''>Selecione</option>
                                 {voos.map(item => (
-                                    <option key={item.nome} value={item.nome}>
-                                        {item.nome}
+                                    <option key={item.identificador} value={item.identificador}>
+                                        {item.identificador}
                                     </option>
                                 ))}
                             </Form.Select>
